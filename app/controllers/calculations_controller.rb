@@ -9,12 +9,12 @@ class CalculationsController < ApplicationController
     # The text the user input is in the string @text.
     # The special word the user input is in the string @special_word.
     # ================================================================================
-
-    @word_count = @text.scan(' ').count #troubleshoot code to remove extra spaces#
-    @character_count_with_spaces = @text.length
-    @character_count_without_spaces = @text.gsub!(' ','').length
+    #@text = @text.chomp
     downtext= @text.downcase
     downspecial= @special_word.downcase
+    @word_count = downtext.scan(' ').count #troubleshoot code to remove extra spaces#
+    @character_count_with_spaces = downtext.length
+    @character_count_without_spaces = downtext.gsub!(' ','').length
     @occurrences = downtext.scan(downspecial).count
 
     # ================================================================================
@@ -61,11 +61,11 @@ class CalculationsController < ApplicationController
     # ================================================================================
 
     @seconds = @ending - @starting
-    @minutes = ((@ending - @starting) /60).to_i
-    @hours = ((@ending - @starting) /60/60).to_i
-    @days = ((@ending - @starting) /60/60/24).to_i
-    @weeks = ((@ending - @starting) /60/60/24/52).to_i
-    @years = ((@ending - @starting) /60/60/24/365).to_i
+    @minutes = @seconds /60
+    @hours = @minutes/60
+    @days = @hours/24
+    @weeks = @days/7
+    @years = @weeks/52
 
     # ================================================================================
     # Your code goes above.
@@ -92,7 +92,7 @@ class CalculationsController < ApplicationController
 
     @range = @numbers.max - @numbers.min
 
-    @median = @sorted_numbers[(@count/2)]
+    @median = @sorted_numbers[(@count/2)].to_i
 
     @sum = @numbers.inject(:+)
 
